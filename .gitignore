@@ -1,0 +1,14 @@
+# Zugangsdaten & Secrets
+.env
+session.json
+
+# Generierte Datendateien
+output.json
+sync-state.json
+api-calls.json
+*.csv
+*.xlsx
+
+# Node
+node_modules/
+npm-debug.log*
