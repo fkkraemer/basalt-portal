@@ -7,6 +7,9 @@ const XLSX    = require('xlsx');
 const app  = express();
 const PORT = process.env.PORT || 3030;
 
+// Healthcheck for Railway (must be before Basic Auth)
+app.get('/health', (req, res) => res.send('ok'));
+
 // Passwortschutz (APP_PASSWORD als Umgebungsvariable setzen)
 app.use((req, res, next) => {
   const pwd = process.env.APP_PASSWORD;
