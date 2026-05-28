@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Basalt Portal — Lieferverfolgung</title>
+<title>Basalt Portal</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -13,84 +13,97 @@
   --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
   --radius: 12px; --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
 }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 24px 20px; }
-.app { max-width: 980px; margin: 0 auto; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 20px; }
+.app { max-width: 1400px; margin: 0 auto; }
 
-header { margin-bottom: 24px; }
-header h1 { font-size: 21px; font-weight: 700; }
-header p  { color: var(--muted); font-size: 13px; margin-top: 3px; }
+header { margin-bottom: 16px; }
+header h1 { font-size: 20px; font-weight: 700; }
+header p  { color: var(--muted); font-size: 12px; margin-top: 2px; }
 
-.card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px; margin-bottom: 18px; border: 1px solid var(--border); }
-.card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.card-head h2 { font-size: 15px; font-weight: 600; }
-.dot-num { width: 28px; height: 28px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
-.dot-num.done { background: var(--success); }
+/* Two-column layout */
+.layout {
+  display: grid;
+  grid-template-columns: 265px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+/* Cards */
+.card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
+.card:last-child { margin-bottom: 0; }
+
+/* Sidebar heading */
+.card-head-sm { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.card-head-sm h3 { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+.dot-sm { width: 20px; height: 20px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+.dot-sm.done { background: var(--success); }
 
 /* Forms */
-.row   { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
-.field { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 180px; }
-label  { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
-input[type="text"], input[type="password"] { padding: 9px 13px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; transition: border-color .15s; }
+.row   { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.field { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+label  { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
+input[type="text"], input[type="password"], input[type="number"], input[type="date"] {
+  padding: 8px 11px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; transition: border-color .15s; width: 100%;
+}
 input:focus { border-color: var(--primary); }
-button { padding: 9px 18px; border-radius: 8px; border: none; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .15s; white-space: nowrap; }
+select { padding: 8px 11px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; background: #fff; width: 100%; }
+select:focus { border-color: var(--primary); }
+
+button { padding: 8px 14px; border-radius: 8px; border: none; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .15s; white-space: nowrap; }
 .btn-primary { background: var(--primary); color: #fff; }
 .btn-primary:hover:not(:disabled) { background: var(--primary-h); }
-.btn-outline { background: #fff; color: var(--text); border: 1px solid var(--border); }
-.btn-outline:hover:not(:disabled) { background: var(--bg); }
 button:disabled { opacity: .4; cursor: not-allowed; }
 
-.banner { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; }
+.banner { display: flex; align-items: center; gap: 8px; padding: 7px 11px; border-radius: 7px; font-size: 12px; margin-bottom: 10px; }
 .banner.ok    { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
 .banner.error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
-.bdot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.bdot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 
-/* Run button */
-.run-btn { width: 100%; padding: 14px; font-size: 15px; font-weight: 600; background: var(--primary); color: #fff; border-radius: 10px; border: none; cursor: pointer; transition: all .15s; }
+/* Sync button */
+.run-btn { width: 100%; padding: 10px; font-size: 13px; font-weight: 600; background: var(--primary); color: #fff; border-radius: 8px; border: none; cursor: pointer; transition: all .15s; }
 .run-btn:hover:not(:disabled) { background: var(--primary-h); }
 .run-btn:disabled { opacity: .5; cursor: not-allowed; }
 
-.sync-info { font-size: 12px; color: var(--muted); margin-top: 9px; }
+.sync-info { font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
 .sync-info strong { color: var(--text); }
-.new-badge { background: #d1fae5; color: #065f46; border-radius: 12px; padding: 1px 8px; font-size: 11px; font-weight: 600; margin-left: 4px; }
+.new-badge { background: #d1fae5; color: #065f46; border-radius: 10px; padding: 1px 7px; font-size: 10px; font-weight: 600; }
 
-.log-box { background: #0f172a; color: #94a3b8; border-radius: 8px; padding: 12px 14px; font-family: 'Consolas', monospace; font-size: 12px; height: 160px; overflow-y: auto; line-height: 1.7; display: none; margin-top: 14px; }
+.log-box { background: #0f172a; color: #94a3b8; border-radius: 7px; padding: 10px 12px; font-family: 'Consolas', monospace; font-size: 11px; height: 140px; overflow-y: auto; line-height: 1.7; display: none; margin-top: 10px; }
 .log-box.show { display: block; }
-.lt { color: #475569; margin-right: 6px; }
+.lt { color: #475569; margin-right: 5px; }
 .lm { color: #e2e8f0; }
 
+/* Order button */
+.order-btn { width: 100%; padding: 11px; font-size: 13px; font-weight: 600; background: var(--success); color: #fff; border-radius: 10px; border: none; cursor: pointer; transition: all .15s; }
+.order-btn:hover { background: #059669; }
+
 /* Excel button */
-.excel-btn { display: inline-flex; align-items: center; gap: 8px; background: #166534; color: white; padding: 11px 20px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; transition: background .15s; }
+.excel-btn { display: inline-flex; align-items: center; gap: 7px; background: #166534; color: white; padding: 9px 16px; border-radius: 8px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; transition: background .15s; }
 .excel-btn:hover { background: #14532d; }
 
-/* ─── Tracking-Ansicht ──────────────────────────────────────────────── */
-.filter-bar { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 18px; padding: 16px; background: var(--bg); border-radius: 10px; }
-.filter-bar .field { min-width: 140px; }
-.filter-bar select, .filter-bar input[type="date"] { padding: 8px 11px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; background: #fff; }
-.filter-bar select:focus, .filter-bar input[type="date"]:focus { border-color: var(--primary); }
+/* Main card */
+.main-card { margin-bottom: 0; }
+.main-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
+.main-card-head h2 { font-size: 16px; font-weight: 700; }
+
+/* Filter bar */
+.filter-bar { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 14px; padding: 14px; background: var(--bg); border-radius: 10px; }
+.filter-bar .field { min-width: 120px; }
 .filter-count { font-size: 12px; color: var(--muted); margin-left: auto; align-self: center; }
 
-/* Tracking item */
-.tl-list { display: flex; flex-direction: column; gap: 10px; }
-
-.tl-item {
-  border: 1px solid var(--border); border-radius: 10px;
-  overflow: hidden; background: var(--surface);
-  transition: box-shadow .15s;
-}
+/* Tracking items */
+.tl-list { display: flex; flex-direction: column; gap: 9px; }
+.tl-item { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--surface); transition: box-shadow .15s; }
 .tl-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,.08); }
 .tl-item.complete { border-left: 4px solid var(--success); }
 .tl-item.partial  { border-left: 4px solid var(--warning); }
 .tl-item.pending  { border-left: 4px solid #cbd5e0; }
-
-.tl-main { display: flex; align-items: flex-start; gap: 14px; padding: 14px 16px; }
-
-.tl-status-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; line-height: 1; }
-
+.tl-main { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; }
+.tl-status-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; line-height: 1; }
 .tl-body { flex: 1; min-width: 0; }
-.tl-material { font-size: 14px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tl-meta { font-size: 12px; color: var(--muted); display: flex; gap: 12px; flex-wrap: wrap; }
+.tl-material { font-size: 14px; font-weight: 600; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tl-meta { font-size: 12px; color: var(--muted); display: flex; gap: 10px; flex-wrap: wrap; }
 .tl-meta span { display: flex; align-items: center; gap: 3px; }
-
 .tl-right { text-align: right; flex-shrink: 0; }
 .tl-amounts { font-size: 13px; }
 .tl-ordered  { color: var(--muted); }
@@ -98,64 +111,148 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 .tl-delivered.complete { color: var(--success); }
 .tl-delivered.partial  { color: var(--warning); }
 .tl-delivered.pending  { color: #cbd5e0; }
-
 .tl-deliveries { border-top: 1px solid var(--border); background: #f8fafc; }
-.tl-delivery-row { display: flex; align-items: center; gap: 12px; padding: 9px 16px 9px 52px; font-size: 13px; border-bottom: 1px solid var(--border); }
+.tl-delivery-row { display: flex; align-items: center; gap: 10px; padding: 8px 14px 8px 44px; font-size: 12px; border-bottom: 1px solid var(--border); }
 .tl-delivery-row:last-child { border-bottom: none; }
-.tl-delivery-date { font-weight: 600; min-width: 90px; }
-.tl-ls-num { color: var(--primary); font-family: monospace; font-size: 12px; }
+.tl-delivery-date { font-weight: 600; min-width: 80px; }
+.tl-ls-num { color: var(--primary); font-family: monospace; font-size: 11px; }
 .tl-delivery-amount { margin-left: auto; font-weight: 600; color: var(--success); }
 
 .empty { text-align: center; padding: 48px; color: var(--muted); font-size: 14px; }
-
-.summary-strip { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-.sum-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; font-size: 13px; }
-.sum-chip .n { font-size: 20px; font-weight: 700; color: var(--primary); display: block; }
+.summary-strip { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.sum-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 9px 14px; font-size: 12px; }
+.sum-chip .n { font-size: 18px; font-weight: 700; color: var(--primary); display: block; }
 .sum-chip.green .n { color: var(--success); }
 .sum-chip.orange .n { color: var(--warning); }
 .sum-chip.gray .n { color: #94a3b8; }
+
+/* Modal */
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+.modal { background: var(--surface); border-radius: var(--radius); box-shadow: 0 20px 60px rgba(0,0,0,.25); width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
+.modal-head { display: flex; align-items: center; justify-content: space-between; padding: 20px 22px 0; margin-bottom: 16px; }
+.modal-head h2 { font-size: 17px; font-weight: 700; }
+.modal-close { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--muted); padding: 4px 8px; border-radius: 6px; line-height: 1; }
+.modal-close:hover { background: var(--bg); }
+.modal-body { padding: 0 22px 22px; }
+.mfield { margin-bottom: 13px; }
+.mfield label { display: block; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 5px; }
+textarea { padding: 9px 13px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; resize: vertical; outline: none; font-family: inherit; width: 100%; }
+textarea:focus { border-color: var(--primary); }
+
+@media (max-width: 720px) {
+  .layout { grid-template-columns: 1fr; }
+  body { padding: 12px; }
+}
 </style>
 </head>
 <body>
 <div class="app">
 
   <header>
-    <h1>Basalt Portal — Lieferverfolgung</h1>
+    <h1>Basalt Portal</h1>
     <p>Bestellungen &amp; Lieferungen auf einen Blick</p>
   </header>
 
-  <!-- 1. Zugangsdaten -->
-  <div class="card">
-    <div class="card-head"><div class="dot-num" id="dot1">1</div><h2>Zugangsdaten</h2></div>
-    <div id="cred-banner"></div>
-    <div class="row">
-      <div class="field"><label for="username">Benutzername / E-Mail</label><input type="text" id="username" autocomplete="username"></div>
-      <div class="field"><label for="password">Passwort</label><input type="password" id="password" autocomplete="current-password"></div>
-      <button class="btn-primary" onclick="saveCredentials()">Speichern</button>
+  <div class="layout">
+
+    <!-- ─── SIDEBAR ─── -->
+    <aside>
+
+      <!-- Zugangsdaten -->
+      <div class="card">
+        <div class="card-head-sm">
+          <div class="dot-sm" id="dot1">1</div>
+          <h3>Zugangsdaten</h3>
+        </div>
+        <div id="cred-banner"></div>
+        <div class="field" style="margin-bottom:8px">
+          <label>E-Mail</label>
+          <input type="text" id="username" autocomplete="username">
+        </div>
+        <div class="field" style="margin-bottom:10px">
+          <label>Passwort</label>
+          <input type="password" id="password" autocomplete="current-password">
+        </div>
+        <button class="btn-primary" style="width:100%" onclick="saveCredentials()">Speichern</button>
+      </div>
+
+      <!-- Datenabruf -->
+      <div class="card">
+        <div class="card-head-sm">
+          <div class="dot-sm" id="dot2">2</div>
+          <h3>Datenabruf</h3>
+        </div>
+        <button class="run-btn" id="run-btn" onclick="runScraper()">
+          <span id="run-icon">▶</span> <span id="run-label">Aktualisieren</span>
+        </button>
+        <div class="sync-info" id="sync-info"></div>
+        <div class="log-box" id="log-box"></div>
+      </div>
+
+      <!-- Neue Bestellung -->
+      <button class="order-btn" onclick="openOrderModal()">＋ Neue Bestellung</button>
+
+    </aside>
+
+    <!-- ─── MAIN ─── -->
+    <main>
+      <div class="card main-card">
+        <div id="tracking-head" style="display:none" class="main-card-head">
+          <h2>Lieferverfolgung</h2>
+          <a href="/api/download/excel" download class="excel-btn">&#x1F4E5; Excel-Report</a>
+        </div>
+        <div id="tracking-area"><div class="empty">Noch keine Daten — bitte links aktualisieren.</div></div>
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<!-- ─── Order Modal ─── -->
+<div id="order-modal" class="modal-backdrop" style="display:none" onclick="closeOrderModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <h2>Neue Bestellung</h2>
+      <button class="modal-close" onclick="document.getElementById('order-modal').style.display='none'">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mfield">
+        <label>Material</label>
+        <select id="o-material" onchange="onMaterialChange()"></select>
+      </div>
+      <div class="mfield">
+        <label>Baustelle / Lieferort</label>
+        <select id="o-baustelle"></select>
+      </div>
+      <div class="row" style="margin-bottom:13px">
+        <div class="field">
+          <label>Menge</label>
+          <input type="number" id="o-menge" min="0" step="0.5">
+        </div>
+        <div class="field" style="max-width:90px">
+          <label>Einheit</label>
+          <input type="text" id="o-einheit" placeholder="t">
+        </div>
+      </div>
+      <div class="mfield">
+        <label>Wunschtermin</label>
+        <input type="date" id="o-datum">
+      </div>
+      <div class="mfield">
+        <label>Anmerkungen (optional)</label>
+        <textarea id="o-notes" rows="3"></textarea>
+      </div>
+      <button class="btn-primary" style="width:100%;padding:12px;font-size:14px;font-weight:600;border-radius:10px" onclick="sendOrder()">
+        ✉ E-Mail-Entwurf öffnen
+      </button>
     </div>
   </div>
-
-  <!-- 2. Datenabruf -->
-  <div class="card">
-    <div class="card-head"><div class="dot-num" id="dot2">2</div><h2>Datenabruf</h2></div>
-    <button class="run-btn" id="run-btn" onclick="runScraper()">
-      <span id="run-icon">▶</span> <span id="run-label">Daten abrufen / aktualisieren</span>
-    </button>
-    <div class="sync-info" id="sync-info"></div>
-    <div class="log-box" id="log-box"></div>
-  </div>
-
-  <!-- 3. Lieferverfolgung -->
-  <div class="card">
-    <div class="card-head"><div class="dot-num" id="dot3">3</div><h2>Lieferverfolgung</h2></div>
-    <div id="tracking-area"><div class="empty">Noch keine Daten abgerufen.</div></div>
-  </div>
-
 </div>
 
 <script>
 let lastPhase = 'idle';
 let appData   = {};
+let orderEmail = '';
 
 // ─── Init ──────────────────────────────────────────────────────────────────
 (async () => {
@@ -165,7 +262,11 @@ let appData   = {};
     if (d.saved) { banner('cred-banner', 'ok', 'Zugangsdaten gespeichert.'); dot('dot1'); }
   } catch {}
 
-  // Bereits vorhandene Daten laden
+  try {
+    const cfg = await getJSON('/api/config');
+    orderEmail = cfg.orderEmail || '';
+  } catch {}
+
   try {
     const d = await getJSON('/api/data');
     if (Object.keys(d).length) { appData = d; renderTracking(); }
@@ -199,15 +300,14 @@ async function runScraper() {
 async function poll() {
   try {
     const s = await getJSON('/api/status');
-
     if (['running','done','error'].includes(s.phase)) updateLog(s.logs);
 
     const info = document.getElementById('sync-info');
     if (s.lastRun || s.lastSync) {
-      let txt = s.lastRun ? `<strong>Letzter Abruf:</strong> ${s.lastRun}` : '';
-      if (s.lastSync) txt += `&nbsp;&nbsp;|&nbsp;&nbsp;<strong>Datenstand ab:</strong> ${s.lastSync}`;
+      let txt = s.lastRun ? `<strong>${s.lastRun}</strong>` : '';
+      if (s.lastSync) txt += `<br>ab ${s.lastSync}`;
       if (s.summary?.neueBestellungen > 0 || s.summary?.neueLieferscheine > 0) {
-        txt += `&nbsp;&nbsp;<span class="new-badge">+${s.summary.neueBestellungen} Best. / +${s.summary.neueLieferscheine} LS neu</span>`;
+        txt += `&nbsp;<span class="new-badge">+${s.summary.neueBestellungen}/${s.summary.neueLieferscheine} neu</span>`;
       }
       info.innerHTML = txt;
     }
@@ -227,17 +327,15 @@ async function poll() {
 function setRunning(active) {
   document.getElementById('run-btn').disabled = active;
   document.getElementById('run-icon').textContent  = active ? '⏳' : '▶';
-  document.getElementById('run-label').textContent = active ? 'Läuft...' : 'Daten abrufen / aktualisieren';
+  document.getElementById('run-label').textContent = active ? 'Läuft...' : 'Aktualisieren';
 }
 
-// ─── Tracking-Ansicht ───────────────────────────────────────────────────────
+// ─── Tracking ───────────────────────────────────────────────────────────────
 function renderTracking() {
   const bestellungen  = appData.bestellungen  || [];
   const lieferscheine = (appData.lieferscheine || []).filter(ls => !ls.cancelled);
-
   if (!bestellungen.length) return;
 
-  // Lieferscheine nach Vertrag + Material gruppieren
   const lsMap = {};
   for (const ls of lieferscheine) {
     const key = mkKey(ls.contractNumber, ls.materialName || ls.material);
@@ -245,31 +343,24 @@ function renderTracking() {
     lsMap[key].push(ls);
   }
 
-  // Bestellungen mit Lieferscheinen verknüpfen
   const entries = bestellungen.map(b => {
-    const key       = mkKey(b.contractNumber, b.materialName);
+    const key        = mkKey(b.contractNumber, b.materialName);
     const deliveries = (lsMap[key] || [])
       .filter(ls => !ls.deliveryNoteCreationDate || new Date(ls.deliveryNoteCreationDate) >= new Date(b.deliveryStart) - 86400000 * 3)
       .sort((a, b) => (a.deliveryNoteCreationDate || '') < (b.deliveryNoteCreationDate || '') ? -1 : 1);
-    const delivered = deliveries.reduce((s, ls) => s + (ls.amount || 0), 0);
-    const status    = deliveries.length === 0 ? 'pending' : delivered >= b.amount * 0.99 ? 'complete' : 'partial';
+    const delivered  = deliveries.reduce((s, ls) => s + (ls.amount || 0), 0);
+    const status     = deliveries.length === 0 ? 'pending' : delivered >= b.amount * 0.99 ? 'complete' : 'partial';
     return { ...b, deliveries, delivered: round2(delivered), status };
   }).sort((a, b) => (b.deliveryStart || '') < (a.deliveryStart || '') ? -1 : 1);
 
-  // Filter-Optionen
   const baustellenSet = [...new Set(entries.map(e => e.constructionSite || '').filter(Boolean))].sort();
-  const area = document.getElementById('tracking-area');
 
-  area.innerHTML = `
+  document.getElementById('tracking-head').style.display = 'flex';
+
+  document.getElementById('tracking-area').innerHTML = `
     <div class="filter-bar">
-      <div class="field">
-        <label>Von</label>
-        <input type="date" id="f-von" value="${daysAgo(30)}">
-      </div>
-      <div class="field">
-        <label>Bis</label>
-        <input type="date" id="f-bis" value="${todayISO()}">
-      </div>
+      <div class="field"><label>Von</label><input type="date" id="f-von" value="${daysAgo(30)}"></div>
+      <div class="field"><label>Bis</label><input type="date" id="f-bis" value="${todayISO()}"></div>
       <div class="field">
         <label>Baustelle</label>
         <select id="f-baustelle">
@@ -283,25 +374,19 @@ function renderTracking() {
           <option value="">Alle</option>
           <option value="pending">Ausstehend</option>
           <option value="partial">Teillieferung</option>
-          <option value="complete">Vollständig geliefert</option>
+          <option value="complete">Vollständig</option>
         </select>
       </div>
       <span class="filter-count" id="f-count"></span>
     </div>
     <div class="summary-strip" id="sum-strip"></div>
-    <div style="margin-bottom:14px">
-      <a href="/api/download/excel" download class="excel-btn">&#x1F4E5; Excel-Report herunterladen</a>
-    </div>
     <div class="tl-list" id="tl-list"></div>`;
 
-  dot('dot3');
   window._tlEntries = entries;
-
   document.getElementById('f-von').addEventListener('input', applyFilter);
   document.getElementById('f-bis').addEventListener('input', applyFilter);
   document.getElementById('f-baustelle').addEventListener('change', applyFilter);
   document.getElementById('f-status').addEventListener('change', applyFilter);
-
   applyFilter();
 }
 
@@ -320,15 +405,13 @@ function applyFilter() {
     return true;
   });
 
-  // Summary-Chips
   const complete = entries.filter(e => e.status === 'complete').length;
   const partial  = entries.filter(e => e.status === 'partial').length;
   const pending  = entries.filter(e => e.status === 'pending').length;
   document.getElementById('sum-strip').innerHTML = `
-    <div class="sum-chip green"><span class="n">${complete}</span>Vollständig geliefert</div>
+    <div class="sum-chip green"><span class="n">${complete}</span>Vollständig</div>
     <div class="sum-chip orange"><span class="n">${partial}</span>Teillieferung</div>
     <div class="sum-chip gray"><span class="n">${pending}</span>Ausstehend</div>`;
-
   document.getElementById('f-count').textContent = `${entries.length} Bestellungen`;
 
   if (!entries.length) {
@@ -341,15 +424,13 @@ function applyFilter() {
     const delivLabel = e.status === 'pending' ? 'Noch nicht geliefert'
                      : e.status === 'complete' ? `Geliefert: ${e.delivered} ${e.unit}`
                      : `Geliefert: ${e.delivered} / ${e.amount} ${e.unit}`;
-
     const delivRows = e.deliveries.map(ls => `
       <div class="tl-delivery-row">
         <span class="tl-delivery-date">${fmtDate(ls.deliveryNoteCreationDate)}</span>
         <span class="tl-ls-num">LS ${esc(ls.deliveryNoteNumber)}</span>
-        <span style="color:var(--muted);font-size:12px">${esc(ls.constructionSite || ls.destination1 || '')}</span>
+        <span style="color:var(--muted);font-size:11px">${esc(ls.constructionSite || ls.destination1 || '')}</span>
         <span class="tl-delivery-amount">${ls.amount} ${ls.unit}</span>
       </div>`).join('');
-
     return `
       <div class="tl-item ${e.status}">
         <div class="tl-main">
@@ -357,10 +438,10 @@ function applyFilter() {
           <div class="tl-body">
             <div class="tl-material">${esc(e.materialName || '')}</div>
             <div class="tl-meta">
-              <span>📅 Bestellt: ${fmtDate(e.deliveryStart)}</span>
+              <span>📅 ${fmtDate(e.deliveryStart)}</span>
               <span>📍 ${esc(e.shippingPoint || e._shippingPoint || '')}</span>
               <span>🏗 ${esc(e.constructionSite || '')}</span>
-              <span style="font-family:monospace;font-size:11px">Vertrag ${esc(e.contractNumber || '')}</span>
+              <span style="font-family:monospace;font-size:11px">Vtr. ${esc(e.contractNumber || '')}</span>
             </div>
           </div>
           <div class="tl-right">
@@ -375,43 +456,92 @@ function applyFilter() {
   }).join('');
 }
 
+// ─── Order Modal ─────────────────────────────────────────────────────────────
+function openOrderModal() {
+  const bestellungen = appData.bestellungen || [];
+  if (!bestellungen.length) { alert('Bitte zuerst Daten abrufen.'); return; }
+
+  const materialMap = {};
+  for (const b of bestellungen) {
+    if (b.materialName && !materialMap[b.materialName]) materialMap[b.materialName] = b.unit || '';
+  }
+  const materials  = Object.keys(materialMap).sort();
+  const baustellen = [...new Set(bestellungen.map(b => b.constructionSite).filter(Boolean))].sort();
+
+  document.getElementById('o-material').innerHTML  = materials.map(m => `<option value="${esc(m)}" data-unit="${esc(materialMap[m])}">${esc(m)}</option>`).join('');
+  document.getElementById('o-baustelle').innerHTML = baustellen.map(b => `<option>${esc(b)}</option>`).join('');
+  onMaterialChange();
+
+  document.getElementById('o-datum').value = todayISO();
+  document.getElementById('o-menge').value = '';
+  document.getElementById('o-notes').value = '';
+  document.getElementById('order-modal').style.display = 'flex';
+}
+
+function onMaterialChange() {
+  const sel = document.getElementById('o-material');
+  const opt = sel.options[sel.selectedIndex];
+  if (opt) document.getElementById('o-einheit').value = opt.dataset.unit || '';
+}
+
+function closeOrderModal(e) {
+  if (e.target === document.getElementById('order-modal'))
+    document.getElementById('order-modal').style.display = 'none';
+}
+
+function sendOrder() {
+  const material  = document.getElementById('o-material').value;
+  const baustelle = document.getElementById('o-baustelle').value;
+  const menge     = document.getElementById('o-menge').value;
+  const einheit   = document.getElementById('o-einheit').value;
+  const datum     = document.getElementById('o-datum').value;
+  const notes     = document.getElementById('o-notes').value.trim();
+
+  if (!material || !menge || !datum) { alert('Bitte Material, Menge und Wunschtermin angeben.'); return; }
+
+  const subject = encodeURIComponent(`Bestellung: ${material} – ${baustelle} – ${fmtDate(datum)}`);
+  const body = encodeURIComponent(
+`Sehr geehrte Damen und Herren,
+
+wir möchten folgende Bestellung aufgeben:
+
+Material:      ${material}
+Menge:         ${menge} ${einheit}
+Lieferort:     ${baustelle}
+Wunschtermin:  ${fmtDate(datum)}
+Auftraggeber:  FK Krämer GmbH${notes ? `\n\nAnmerkungen:\n${notes}` : ''}
+
+Mit freundlichen Grüßen
+Fabian Krämer
+FK Krämer GmbH`);
+
+  window.location.href = `mailto:${encodeURIComponent(orderEmail)}?subject=${subject}&body=${body}`;
+}
+
 // ─── Helpers ────────────────────────────────────────────────────────────────
 function mkKey(contract, material) {
   return `${contract || ''}||${(material || '').trim().toLowerCase()}`;
 }
-
 function fmtDate(iso) {
   if (!iso) return '—';
   try { return new Date(iso).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
   catch { return iso; }
 }
-
-function daysAgo(n) {
-  const d = new Date(); d.setDate(d.getDate() - n);
-  return d.toISOString().slice(0, 10);
-}
-
+function daysAgo(n) { const d = new Date(); d.setDate(d.getDate() - n); return d.toISOString().slice(0, 10); }
 function todayISO() { return new Date().toISOString().slice(0, 10); }
-
 function round2(n) { return Math.round((n || 0) * 100) / 100; }
-
 function updateLog(logs) {
   const el = document.getElementById('log-box');
   el.innerHTML = logs.map(l => `<div><span class="lt">${l.t}</span><span class="lm">${esc(l.msg)}</span></div>`).join('');
   el.scrollTop = el.scrollHeight;
 }
-
 function banner(id, type, msg) {
-  document.getElementById(id).innerHTML =
-    `<div class="banner ${type}"><div class="bdot"></div>${esc(msg)}</div>`;
+  document.getElementById(id).innerHTML = `<div class="banner ${type}"><div class="bdot"></div>${esc(msg)}</div>`;
 }
-
-function dot(id) { document.getElementById(id).classList.add('done'); }
-
+function dot(id) { const el = document.getElementById(id); if (el) el.classList.add('done'); }
 function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
 async function getJSON(url) { return (await fetch(url)).json(); }
 </script>
 </body>

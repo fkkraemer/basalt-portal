@@ -463,6 +463,8 @@ app.post('/api/run', (req, res) => {
 
 app.get('/api/data', (req, res) => res.json(state.data));
 
+app.get('/api/config', (req, res) => res.json({ orderEmail: process.env.ORDER_EMAIL || '' }));
+
 app.get('/api/download/excel', (req, res) => {
   const file = path.resolve('basalt-report.xlsx');
   if (!fs.existsSync(file)) return res.status(404).json({ error: 'Noch kein Report vorhanden' });
